@@ -98,3 +98,56 @@ pages.forEach((_, index) => {
 
     }, (index + 1) * 200 + 2100)
 })
+
+// ========== Services Modals (Read More) ==========
+// Open modal on 'Read More' click
+document.addEventListener('click', function(e) {
+  const readMoreBtn = e.target.closest('.read-more');
+  if (readMoreBtn) {
+    e.preventDefault();
+    const targetId = readMoreBtn.getAttribute('data-target');
+    const modal = targetId ? document.getElementById(targetId) : null;
+    if (modal) {
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+    }
+  }
+
+  // Close button inside modal
+  const closeBtn = e.target.closest('.modal-close');
+  if (closeBtn) {
+    const modal = closeBtn.closest('.modal');
+    if (modal) {
+      modal.classList.remove('open');
+      modal.setAttribute('aria-hidden', 'true');
+      if (!document.querySelector('.modal.open')) {
+        document.body.classList.remove('modal-open');
+      }
+    }
+  }
+});
+
+// Close when clicking backdrop (outside content)
+document.addEventListener('mousedown', function(e) {
+  const modal = e.target.closest('.modal');
+  if (modal && e.target === modal) {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    if (!document.querySelector('.modal.open')) {
+      document.body.classList.remove('modal-open');
+    }
+  }
+});
+
+// Close on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal.open').forEach(m => {
+      m.classList.remove('open');
+      m.setAttribute('aria-hidden', 'true');
+    });
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = 'auto';
+  }
+});
